@@ -1,0 +1,5 @@
+Building Flirtcoin
+
+See doc/build-*.md for instructions on building flirtcoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Flirtcoin.

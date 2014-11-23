@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Flirtcoin
+Comment=Flirtcoin P2P Cryptocurrency
+Comment[fr]=Flirtcoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Flirtcoin, eşten eşe kriptografik sanal para birimi
+Exec=flirtcoin-qt %u
+Terminal=false
+Type=Application
+Icon=flirtcoin128
+MimeType=x-scheme-handler/flirtcoin;
+Categories=Office;Finance;

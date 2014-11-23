@@ -1,0 +1,11 @@
+[Protocol]
+exec=flirtcoin-qt '%u'
+protocol=flirtcoin
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

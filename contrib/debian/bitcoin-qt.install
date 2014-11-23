@@ -1,0 +1,6 @@
+usr/local/bin/flirtcoin-qt usr/bin
+share/pixmaps/flirtcoin32.xpm usr/share/pixmaps
+share/pixmaps/flirtcoin16.xpm usr/share/pixmaps
+share/pixmaps/flirtcoin128.png usr/share/pixmaps
+debian/flirtcoin-qt.desktop usr/share/applications
+debian/flirtcoin-qt.protocol usr/share/kde4/services/

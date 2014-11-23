@@ -1,0 +1,27 @@
+# /etc/conf.d/flirtcoind: config file for /etc/init.d/flirtcoind
+
+# Config file location
+#FLIRTCOIND_CONFIGFILE="/etc/flirtcoin/flirtcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $FLIRTCOIND_USER)
+#FLIRTCOIND_PIDDIR="/var/run/flirtcoind"
+
+# What filename to give the pidfile
+#FLIRTCOIND_PIDFILE="${FLIRTCOIND_PIDDIR}/flirtcoind.pid"
+
+# Where to write flirtcoind data (be mindful that the blockchain is large)
+#FLIRTCOIND_DATADIR="/var/lib/flirtcoind"
+
+# User and group to own flirtcoind process
+#FLIRTCOIND_USER="flirtcoin"
+#FLIRTCOIND_GROUP="flirtcoin"
+
+# Path to flirtcoind executable
+#FLIRTCOIND_BIN="/usr/bin/flirtcoind"
+
+# Nice value to run flirtcoind under
+#FLIRTCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+FLIRTCOIND_OPTS="-disablewallet"
+

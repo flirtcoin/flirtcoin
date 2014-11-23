@@ -1,0 +1,22 @@
+[Unit]
+Description=Flirtcoin's distributed currency daemon
+After=network.target
+
+[Service]
+User=flirtcoin
+Group=flirtcoin
+
+Type=forking
+PIDFile=/var/lib/flirtcoind/flirtcoind.pid
+ExecStart=/usr/bin/flirtcoind -daemon -pid=/var/lib/flirtcoind/flirtcoind.pid \
+-conf=/etc/flirtcoin/flirtcoin.conf -datadir=/var/lib/flirtcoind -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

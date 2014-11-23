@@ -1,0 +1,86 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/flirtcoin/.flirtcoin" ]; then
+	FLIRTCOIND_DEFAULT_DATADIR="/var/lib/flirtcoin/.flirtcoin"
+else
+	FLIRTCOIND_DEFAULT_DATADIR="/var/lib/flirtcoind"
+fi
+
+FLIRTCOIND_CONFIGFILE=${FLIRTCOIND_CONFIGFILE:-/etc/flirtcoin/flirtcoin.conf}
+FLIRTCOIND_PIDDIR=${FLIRTCOIND_PIDDIR:-/var/run/flirtcoind}
+FLIRTCOIND_PIDFILE=${FLIRTCOIND_PIDFILE:-${FLIRTCOIND_PIDDIR}/flirtcoind.pid}
+FLIRTCOIND_DATADIR=${FLIRTCOIND_DATADIR:-${FLIRTCOIND_DEFAULT_DATADIR}}
+FLIRTCOIND_USER=${FLIRTCOIND_USER:-flirtcoin}
+FLIRTCOIND_GROUP=${FLIRTCOIND_GROUP:-flirtcoin}
+FLIRTCOIND_BIN=${FLIRTCOIND_BIN:-/usr/bin/flirtcoind}
+
+name="Flirtcoin Core Daemon"
+description="Flirtcoin crypto-currency p2p network daemon"
+
+command="/usr/bin/flirtcoind"
+command_args="-pid=\"${FLIRTCOIND_PIDFILE}\" \
+		-conf=\"${FLIRTCOIND_CONFIGFILE}\" \
+		-datadir=\"${FLIRTCOIND_DATADIR}\" \
+		-daemon \
+		${FLIRTCOIND_OPTS}"
+
+required_files="${FLIRTCOIND_CONFIGFILE}"
+start_stop_daemon_args="-u ${FLIRTCOIND_USER} \
+			-N ${FLIRTCOIND_NICE:-0} -w 2000"
+pidfile="${FLIRTCOIND_PIDFILE}"
+retry=60
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${FLIRTCOIND_USER}:${FLIRTCOIND_GROUP}" \
+	"${FLIRTCOIND_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${FLIRTCOIND_USER}:${FLIRTCOIND_GROUP}" \
+	"${FLIRTCOIND_PIDDIR}"
+
+	checkpath -f \
+	-o ${FLIRTCOIND_USER}:${FLIRTCOIND_GROUP} \
+	-m 0660 \
+	${FLIRTCOIND_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${FLIRTCOIND_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run flirtcoind."
+		eerror "The setting must appear in ${FLIRTCOIND_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following"
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is also recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Flirtcoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}
