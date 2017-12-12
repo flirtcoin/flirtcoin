@@ -1,3 +1,5 @@
+@Bigdeej ;) 2017 December 12... New process potentially starting!
+
 Flirtcoin Core integration/staging tree
 =====================================
 
